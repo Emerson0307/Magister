@@ -27,29 +27,39 @@ class TelaRecSenha : AppCompatActivity() {
             val InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             InputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 
-            firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val snackbar = Snackbar.make(
-                        view,
-                        "Redefinição de senha iniciada, um e-mail foi enviado!",
-                        Snackbar.LENGTH_SHORT
-                    )
-                    snackbar.setBackgroundTint(Color.parseColor("#562D8B"))
-                    snackbar.setTextColor(Color.WHITE)
-                    snackbar.show()
-                } else {
-                    val snackbar = Snackbar.make(
-                        view,
-                        "Houve um erro, verifique se o e-mail está correto.",
-                        Snackbar.LENGTH_SHORT
-                    )
-                    snackbar.setBackgroundTint(Color.parseColor("#562D8B"))
-                    snackbar.setTextColor(Color.WHITE)
-                    snackbar.show()
+            if (email.isEmpty()) {
+                val snackbar = Snackbar.make(
+                    view,
+                    "Insira um e-mail para iniciar o processo de redefinição de senha!",
+                    Snackbar.LENGTH_SHORT
+                )
+                snackbar.setBackgroundTint(Color.parseColor("#562D8B"))
+                snackbar.setTextColor(Color.WHITE)
+                snackbar.show()
+            } else {
+                firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val snackbar = Snackbar.make(
+                            view,
+                            "Redefinição de senha iniciada, um e-mail foi enviado!",
+                            Snackbar.LENGTH_SHORT
+                        )
+                        snackbar.setBackgroundTint(Color.parseColor("#562D8B"))
+                        snackbar.setTextColor(Color.WHITE)
+                        snackbar.show()
+                    } else {
+                        val snackbar = Snackbar.make(
+                            view,
+                            "Houve um erro, verifique se o e-mail está correto.",
+                            Snackbar.LENGTH_SHORT
+                        )
+                        snackbar.setBackgroundTint(Color.parseColor("#562D8B"))
+                        snackbar.setTextColor(Color.WHITE)
+                        snackbar.show()
+                    }
+                    binding.editEmail2.text = null
                 }
             }
-            binding.editEmail2.text = null
         }
     }
-
 }
