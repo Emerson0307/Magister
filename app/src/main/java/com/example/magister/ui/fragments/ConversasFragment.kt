@@ -82,14 +82,12 @@ class ConversasFragment : Fragment() {
                 val pushToken = documentSnapshot.getString("pushToken")
 
                 if (pushToken.isNullOrEmpty()) {
-                    // O usuário não possui um pushToken, vamos criar um
                     val playerId = OneSignal.getDeviceState()?.userId
 
                     if (playerId != null) {
                         userRef.update("pushToken", playerId)
                             .addOnSuccessListener {
                                 Log.d("ConversasFragment", "Token de registro criado com sucesso")
-                                // Chame a função getUsernameFromChatMessage() aqui
                                 val chatMessage = ChatMessage()
                                 val username = getUsernameFromChatMessage(chatMessage)
                                 Log.d("ConversasFragment", "Username: $username")
@@ -99,9 +97,7 @@ class ConversasFragment : Fragment() {
                             }
                     }
                 } else {
-                    // O usuário já possui um pushToken
                     Log.d("ConversasFragment", "Usuário já possui um token de registro")
-                    // Chame a função getUsernameFromChatMessage() aqui
                     val chatMessage = ChatMessage()
                     val username = getUsernameFromChatMessage(chatMessage)
                     Log.d("ConversasFragment", "Username: $username")
@@ -126,7 +122,7 @@ class ConversasFragment : Fragment() {
                         intent.putExtra(BuscarFragment.EXTRA_USER_ID, userId)
                         startActivity(intent)
                     }.addOnFailureListener { exception ->
-                        // Lide com falhas ao obter o nome de usuário
+                        // Lidando com falhas ao obter o nome de usuário
                     }
                 }
             }
@@ -152,7 +148,7 @@ class ConversasFragment : Fragment() {
                 for (document in documents) {
                     val chatMessage = document.toObject(ChatMessage::class.java)
                     if (chatMessage != null && chatMessage.fromId != null) {
-                        // Verifica se a mensagem é a mais recente da conversa
+                        // Verificando se a mensagem é a mais recente da conversa
                         if (!latestMessagesMap.containsKey(chatMessage.fromId) || chatMessage.timestamp > latestMessagesMap[chatMessage.fromId]?.timestamp ?: 0) {
                             latestMessagesMap[chatMessage.fromId!!] = chatMessage
                         }
@@ -166,16 +162,10 @@ class ConversasFragment : Fragment() {
     }
 
     private fun getUsernameFromChatMessage(chatMessage: ChatMessage): String? {
-        // Implement your logic to retrieve the username based on the chatMessage
-        // You may need to query the Firestore to get the username associated with the chatMessage.fromId
-        // For now, let's assume you have a function to get the username
         return chatMessage.fromId?.let { getUsernameFromId(it) }
     }
 
     private fun getUsernameFromId(userId: String): String {
-        // Implement your logic to retrieve the username based on the userId
-        // You may need to query the Firestore to get the username associated with the userId
-        // For now, let's assume you have a function to get the username
         return "Username"
     }
 }

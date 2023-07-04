@@ -20,7 +20,7 @@ class LatestMessagesAdapter : RecyclerView.Adapter<LatestMessagesAdapter.LatestM
         latestMessages.addAll(messages)
         notifyDataSetChanged()
 
-        // Chame a função para buscar os nomes de usuário e as fotos de perfil com base nos IDs
+        // Chamando a função para buscar os nomes de usuário e as fotos de perfil com base nos IDs
         fetchUsernamesAndProfileImagesFromIds()
     }
 
@@ -49,7 +49,7 @@ class LatestMessagesAdapter : RecyclerView.Adapter<LatestMessagesAdapter.LatestM
                 notifyDataSetChanged()
             }
             .addOnFailureListener { exception ->
-                // Lidar com falhas ao buscar os nomes de usuário e as fotos de perfil
+                // Lidar com falhas aqui
             }
     }
 

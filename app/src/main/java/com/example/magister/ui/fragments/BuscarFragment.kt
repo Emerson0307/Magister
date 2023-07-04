@@ -29,7 +29,6 @@ import com.xwray.groupie.Item
 class BuscarFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
-    //private lateinit var adapter: GroupieAdapter
     private lateinit var binding: ActivityBuscarBinding
     private var buscarList: List<BuscarEntity> = emptyList()
     private lateinit var buscarAdapter: BuscarAdapter
@@ -44,11 +43,6 @@ class BuscarFragment : Fragment() {
 
         recyclerView = view.findViewById(R.id.recycler)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        //recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        //recyclerView.adapter = adapter
-
-
 
         buscarAdapter = BuscarAdapter(buscarList) { buscarEntity, position ->
             val intent = Intent(requireContext(), TelaChat::class.java)
