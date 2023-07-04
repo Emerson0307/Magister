@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +14,7 @@ import com.example.magister.ui.fragments.BuscarFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.onesignal.OneSignal
+import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
@@ -218,6 +220,8 @@ class TelaChat : AppCompatActivity() {
 class ChatFromItem(private val messageText: String) : Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.findViewById<TextView>(R.id.txt_msg).text = messageText
+
+
     }
 
     override fun getLayout(): Int {
@@ -228,6 +232,8 @@ class ChatFromItem(private val messageText: String) : Item<GroupieViewHolder>() 
 class ChatToItem(private val messageText: String) : Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.findViewById<TextView>(R.id.txt_msg1).text = messageText
+
+
     }
 
     override fun getLayout(): Int {
