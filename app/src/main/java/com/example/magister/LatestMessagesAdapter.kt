@@ -1,5 +1,7 @@
 package com.example.magister
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +22,7 @@ class LatestMessagesAdapter : RecyclerView.Adapter<LatestMessagesAdapter.LatestM
         latestMessages.addAll(messages)
         notifyDataSetChanged()
 
-        // Chamando a função para buscar os nomes de usuário e as fotos de perfil com base nos IDs
+        // Chame a função para buscar os nomes de usuário e as fotos de perfil com base nos IDs
         fetchUsernamesAndProfileImagesFromIds()
     }
 
@@ -31,26 +33,32 @@ class LatestMessagesAdapter : RecyclerView.Adapter<LatestMessagesAdapter.LatestM
     private fun fetchUsernamesAndProfileImagesFromIds() {
         val userIds = latestMessages.mapNotNull { it.fromId }
 
-        val db = FirebaseFirestore.getInstance()
-        val usersRef = db.collection("Usuarios")
+        if (userIds.isNotEmpty()) {
+            val db = FirebaseFirestore.getInstance()
+            val usersRef = db.collection("Usuarios")
 
-        usersRef.whereIn("id", userIds)
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                for (document in querySnapshot) {
-                    val userId = document.id
-                    val username = document.getString("nome")
-                    val profileImageUrl = document.getString("fotoUrl")
-                    if (userId != null && username != null && profileImageUrl != null) {
-                        userIdToUsernameMap[userId] = username
-                        userIdToProfileImageUrlMap[userId] = profileImageUrl
+            usersRef.whereIn("id", userIds)
+                .get()
+                .addOnSuccessListener { querySnapshot ->
+                    for (document in querySnapshot) {
+                        val userId = document.id
+                        val username = document.getString("nome")
+                        val profileImageUrl = document.getString("fotoUrl")
+                        if (userId != null && username != null && profileImageUrl != null) {
+                            userIdToUsernameMap[userId] = username
+                            userIdToProfileImageUrlMap[userId] = profileImageUrl
+                        }
                     }
+                    notifyDataSetChanged()
                 }
-                notifyDataSetChanged()
-            }
-            .addOnFailureListener { exception ->
-                // Lidar com falhas aqui
-            }
+                .addOnFailureListener { exception ->
+                    // Lidar com falhas ao buscar os nomes de usuário e as fotos de perfil
+                    Log.e(TAG, "Erro ao buscar nomes de usuário e fotos de perfil: $exception")
+                }
+        } else {
+            // O array de userIds está vazio, não há necessidade de realizar a consulta
+            Log.w(TAG, "Array de userIds está vazio")
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LatestMessageViewHolder {

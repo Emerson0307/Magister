@@ -200,8 +200,7 @@ class FormCadastro : AppCompatActivity() {
 
         val db = FirebaseFirestore.getInstance()
 
-        val usuarioRef = db.collection("Usuarios").document()
-        val usuarioID = usuarioRef.id
+        val uid = FirebaseAuth.getInstance().currentUser!!.uid
 
 
         val nome = binding.editNome.text.toString()
@@ -213,7 +212,7 @@ class FormCadastro : AppCompatActivity() {
 
 
         val usuarios = hashMapOf<String, Any?>()
-        usuarios["id"] = usuarioID
+        usuarios.put("id", uid)
         usuarios.put("nome", nome)
         usuarios.put("escola", escola)
         usuarios.put("materia 1", materia1)
@@ -222,7 +221,7 @@ class FormCadastro : AppCompatActivity() {
         usuarios.put("fotoUrl", fotoUrl)
 
 
-        db.collection("Usuarios").document(usuarioID).set(usuarios)
+        db.collection("Usuarios").document(uid).set(usuarios)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("db", "Sucesso ao salvar os dados")
